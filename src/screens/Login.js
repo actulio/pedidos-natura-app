@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import {
   View,
@@ -9,12 +9,13 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { withFormik } from 'formik';
 
 import logo from '../assets/logo.png';
 import Colors from '../constants/Colors';
 import MyTextInput from '../components/FormikInput';
+import MyHeaderButton from '../components/CustomHeaderButton';
 
 
 const InnerLoginForm = (props) => {
@@ -55,10 +56,11 @@ const InnerLoginForm = (props) => {
         <MyTextInput
           label="SEU EMAIL *"
           name="email"
-          keyboardType="email-address"
           onChangeText={handleChange('email')}
           onBlur={handleBlur('email')}
           value={values.email}
+          keyboardType="email-address"
+          returnKeyType="next"
         />
         <MyTextInput
           label="SUA SENHA *"
@@ -68,6 +70,7 @@ const InnerLoginForm = (props) => {
           value={values.password}
           secureTextEntry
           autoCorrect={false}
+          returnKeyType="done"
         />
 
         <TouchableOpacity onPress={handleSubmit} style={styles.button}>
@@ -86,11 +89,27 @@ const Login = withFormik({
     email: Yup.string().email('Endereço de email inválido').required('O email é obrigatório'),
     password: Yup.string().required('A senha é obrigatória'),
   }),
-  handleSubmit: (values, { setSubmitting }) => {
+  handleSubmit: (values, { props, setSubmitting }) => {
     console.log(values);
     setSubmitting(false);
+    props.navigation.navigate('Home');
   }
 })(InnerLoginForm);
+
+// Login.navigationOptions = (navData) => ({
+//   headerLeft: (
+//     <HeaderButtons HeaderButtonComponent={MyHeaderButton}>
+//       <Item
+//         title="Menu"
+//         iconName="ios-menu"
+//         onPress={() => {
+//           navData.navigation.toggleDrawer();
+//         }}
+//       />
+//     </HeaderButtons>
+//   )
+// });
+
 
 const styles = StyleSheet.create({
   button: {

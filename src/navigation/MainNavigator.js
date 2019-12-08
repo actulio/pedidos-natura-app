@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
@@ -9,9 +9,9 @@ import { Transition } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 
 import LoginScreen from '../screens/Login';
-import HomeScreen from '../screens/Home';
-import OrdersScreen from '../screens/Orders';
-import ContactsScreen from '../screens/Contacts';
+import HomeScreen from '../screens/HomeScreen';
+import OrdersScreen from '../screens/OrdersScreen';
+import ContactsScreen from '../screens/ContactsScreen';
 import Colors from '../constants/Colors';
 
 
@@ -19,7 +19,7 @@ const defaultNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === 'android' ? Colors.primary : ''
   },
-  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+  headerTintColor: Platform.OS === 'android' ? 'black' : Colors.primary
 };
 
 const HomeNavigator = createStackNavigator(
@@ -30,7 +30,7 @@ const HomeNavigator = createStackNavigator(
     navigationOptions: {
       drawerIcon: (drawerConfig) => (
         <Ionicons
-          name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+          name={Platform.OS === 'android' ? 'md-cash' : 'ios-cash'}
           size={23}
           color={drawerConfig.tintColor}
         />
@@ -47,7 +47,7 @@ const ContactsNavigator = createStackNavigator(
     navigationOptions: {
       drawerIcon: (drawerConfig) => (
         <Ionicons
-          name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+          name={Platform.OS === 'android' ? 'md-contacts' : 'ios-contacts'}
           size={23}
           color={drawerConfig.tintColor}
         />
@@ -65,31 +65,13 @@ const OrdersNavigator = createStackNavigator(
     navigationOptions: {
       drawerIcon: (drawerConfig) => (
         <Ionicons
-          name={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+          name={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
           size={23}
           color={drawerConfig.tintColor}
         />
       )
     },
     defaultNavigationOptions: defaultNavOptions
-  }
-);
-
-const DrawerNavigator = createDrawerNavigator(
-  {
-    Home: {
-      screen: HomeNavigator,
-      navigationOptions: {
-        drawerLabel: 'Movie List'
-      }
-    },
-    Contacts: ContactsNavigator,
-    Orders: OrdersNavigator
-  },
-  {
-    contentOptions: {
-      activeTintColor: Colors.primaryColor,
-    },
   }
 );
 
@@ -101,24 +83,52 @@ const LoginNavigator = createStackNavigator(
   }
 );
 
-const MainNavigator = createSwitchNavigator(
+const DrawerNavigator = createDrawerNavigator(
+  {
+    // Login: LoginNavigator, // remover dps
+    Home: {
+      screen: HomeNavigator,
+      navigationOptions: {
+        drawerLabel: 'Equilibrio'
+      }
+    },
+    Contacts: {
+      screen: ContactsNavigator,
+      navigationOptions: {
+        drawerLabel: 'Contatos'
+      }
+    },
+    Orders: {
+      screen: OrdersNavigator,
+      navigationOptions: {
+        drawerLabel: 'Pedidos'
+      }
+    },
+  },
+  {
+    contentOptions: {
+      activeTintColor: Colors.primaryColor,
+    },
+  }
+);
+
+const MainNavigator = createAnimatedSwitchNavigator(
   {
     Login: LoginNavigator,
     Home: DrawerNavigator,
   },
-  // {
-  // transition: (
-  //   <Transition.Together>
-  //     <Transition.Out
-  //       type="slide-left"
-  //       durationMs={500}
-  //       interpolation="easeOut"
-  //     />
-  //     <Transition.In type="slide-right" durationMs={500} />
-  //   </Transition.Together>
-  // ),
-  // }
+  {
+    transition: (
+      <Transition.Together>
+        <Transition.Out
+          type="slide-left"
+          durationMs={500}
+          interpolation="easeOut"
+        />
+        <Transition.In type="slide-right" durationMs={500} />
+      </Transition.Together>
+    ),
+  }
 );
-
 
 export default createAppContainer(MainNavigator);
