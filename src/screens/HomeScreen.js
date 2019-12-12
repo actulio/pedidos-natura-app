@@ -1,13 +1,21 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList
+} from 'react-native';
+import CardItem from '../components/cycleItemCard';
 
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-
-import MyHeaderButton from '../components/CustomHeaderButton';
+import { CYCLES } from '../data/cycles';
 
 const HomeScreen = () => (
   <View style={styles.container}>
-    <Text>This is the home screen!</Text>
+    <FlatList
+      data={CYCLES}
+      renderItem={CardItem}
+      keyExtractor={(item) => item.id}
+    />
   </View>
 );
 
@@ -15,23 +23,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#F4F4F4'
   }
 });
-
-HomeScreen.navigationOptions = (navData) => ({
-  headerLeft: (
-    <HeaderButtons HeaderButtonComponent={MyHeaderButton}>
-      <Item
-        title="Menu"
-        iconName="ios-menu"
-        onPress={() => {
-          navData.navigation.toggleDrawer();
-        }}
-      />
-    </HeaderButtons>
-  )
-});
-
 
 export default HomeScreen;

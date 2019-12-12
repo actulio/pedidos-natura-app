@@ -2,20 +2,17 @@ import React from 'react';
 import * as Yup from 'yup';
 import {
   View,
-  AsyncStorage,
   KeyboardAvoidingView,
   Text,
   Image,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { withFormik } from 'formik';
 
 import logo from '../assets/logo.png';
 import Colors from '../constants/Colors';
 import MyTextInput from '../components/FormikInput';
-import MyHeaderButton from '../components/CustomHeaderButton';
 
 
 const InnerLoginForm = (props) => {
@@ -26,32 +23,13 @@ const InnerLoginForm = (props) => {
     handleSubmit,
   } = props;
 
+  values.email = 'aaa@gmail.com';
+  values.password = 'password';
+
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset="160">
+    <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset="200">
       <Image source={logo} />
       <View style={styles.form}>
-        {/* <Text style={styles.label}>SEU EMAIL *</Text>
-        <TextInput
-          keyboardType="email-address"
-          onChangeText={handleChange('email')}
-          onBlur={handleBlur('email')}
-          value={values.email}
-          name="email"
-          style={styles.input}
-        />
-        {errors.email && touched.email && <ErrorText error={errors.email} /> }
-
-        <Text style={styles.label}>SENHA *</Text>
-        <TextInput
-          onChangeText={handleChange('password')}
-          onBlur={handleBlur('password')}
-          value={values.password}
-          name="password"
-          style={styles.input}
-          secureTextEntry
-          autoCorrect={false}
-        />
-        {errors.password && touched.password && <ErrorText error={errors.password} />} */}
 
         <MyTextInput
           label="SEU EMAIL *"
@@ -61,6 +39,7 @@ const InnerLoginForm = (props) => {
           value={values.email}
           keyboardType="email-address"
           returnKeyType="next"
+          autoCapitalize="none"
         />
         <MyTextInput
           label="SUA SENHA *"

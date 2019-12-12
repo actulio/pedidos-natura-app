@@ -1,8 +1,8 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Text, Platform } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
 import { Transition } from 'react-native-reanimated';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -27,15 +27,6 @@ const HomeNavigator = createStackNavigator(
     Home: HomeScreen,
   },
   {
-    navigationOptions: {
-      drawerIcon: (drawerConfig) => (
-        <Ionicons
-          name={Platform.OS === 'android' ? 'md-cash' : 'ios-cash'}
-          size={23}
-          color={drawerConfig.tintColor}
-        />
-      )
-    },
     defaultNavigationOptions: defaultNavOptions
   }
 );
@@ -43,16 +34,8 @@ const HomeNavigator = createStackNavigator(
 const ContactsNavigator = createStackNavigator(
   {
     Contacts: ContactsScreen
-  }, {
-    navigationOptions: {
-      drawerIcon: (drawerConfig) => (
-        <Ionicons
-          name={Platform.OS === 'android' ? 'md-contacts' : 'ios-contacts'}
-          size={23}
-          color={drawerConfig.tintColor}
-        />
-      )
-    },
+  },
+  {
     defaultNavigationOptions: defaultNavOptions
   }
 );
@@ -62,15 +45,6 @@ const OrdersNavigator = createStackNavigator(
     Orders: OrdersScreen
   },
   {
-    navigationOptions: {
-      drawerIcon: (drawerConfig) => (
-        <Ionicons
-          name={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
-          size={23}
-          color={drawerConfig.tintColor}
-        />
-      )
-    },
     defaultNavigationOptions: defaultNavOptions
   }
 );
@@ -83,39 +57,55 @@ const LoginNavigator = createStackNavigator(
   }
 );
 
-const DrawerNavigator = createDrawerNavigator(
-  {
-    // Login: LoginNavigator, // remover dps
-    Home: {
-      screen: HomeNavigator,
-      navigationOptions: {
-        drawerLabel: 'Equilibrio'
-      }
-    },
-    Contacts: {
-      screen: ContactsNavigator,
-      navigationOptions: {
-        drawerLabel: 'Contatos'
-      }
-    },
-    Orders: {
-      screen: OrdersNavigator,
-      navigationOptions: {
-        drawerLabel: 'Pedidos'
-      }
-    },
+const BottomTabsRouteConfig = {
+  Home: {
+    screen: HomeNavigator,
+    navigationOptions: {
+      tabBarIcon: (tabInfo) => (
+        <Ionicons name="md-cash" size={23} color={tabInfo.tintColor} />
+      ),
+      tabBarColor: Colors.primaryColor,
+      tabBarLabel: <Text style={{ fontSize: 14 }}>Finanças</Text>
+    }
   },
+  Orders: {
+    screen: OrdersNavigator,
+    navigationOptions: {
+      tabBarIcon: (tabInfo) => (
+        <Ionicons name="md-cart" size={23} color={tabInfo.tintColor} />
+      ),
+      tabBarColor: '#1A6D69',
+      tabBarLabel: <Text style={{ fontSize: 15 }}>Pedidos</Text>
+    }
+
+  },
+  Contacts: {
+    screen: ContactsNavigator,
+    navigationOptions: {
+      tabBarIcon: (tabInfo) => (
+        <Ionicons name="md-contacts" size={23} color={tabInfo.tintColor} />
+      ),
+      tabBarColor: '#1E64FF',
+      tabBarLabel: <Text style={{ fontSize: 15 }}>Contatos</Text>
+    }
+  },
+};
+
+const BottomTabsNavigator = createMaterialBottomTabNavigator(
+  BottomTabsRouteConfig,
   {
-    contentOptions: {
-      activeTintColor: Colors.primaryColor,
-    },
+    activeColor: 'white',
+    shifting: true,
+    barStyle: {
+      backgroundColor: Colors.primaryColor
+    }
   }
 );
 
 const MainNavigator = createAnimatedSwitchNavigator(
   {
     Login: LoginNavigator,
-    Home: DrawerNavigator,
+    Home: BottomTabsNavigator,
   },
   {
     transition: (
@@ -125,7 +115,11 @@ const MainNavigator = createAnimatedSwitchNavigator(
           durationMs={500}
           interpolation="easeOut"
         />
-        <Transition.In type="slide-right" durationMs={500} />
+        <Transition.In
+          type="slide-right"
+          durationMs={500}
+          interpolation="easeIn"
+        />
       </Transition.Together>
     ),
   }
