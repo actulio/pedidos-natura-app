@@ -25,11 +25,7 @@ const FormikInput = ({
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
   // which we can spread on <input> and also replace ErrorMessage entirely.
   const [field, meta] = useField(props);
-  const {
-    value,
-    name
-  } = field;
-  // console.log(props, field, meta);
+  const { value, name } = field;
 
   return (
     <View>

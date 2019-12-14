@@ -40,6 +40,7 @@ const InnerLoginForm = (props) => {
           keyboardType="email-address"
           returnKeyType="next"
           autoCapitalize="none"
+          autoCorrect={false}
         />
         <MyTextInput
           label="SUA SENHA *"
@@ -48,6 +49,7 @@ const InnerLoginForm = (props) => {
           onBlur={handleBlur('password')}
           value={values.password}
           secureTextEntry
+          autoCapitalize="none"
           autoCorrect={false}
           returnKeyType="done"
         />
@@ -74,20 +76,6 @@ const Login = withFormik({
     props.navigation.navigate('Home');
   }
 })(InnerLoginForm);
-
-// Login.navigationOptions = (navData) => ({
-//   headerLeft: (
-//     <HeaderButtons HeaderButtonComponent={MyHeaderButton}>
-//       <Item
-//         title="Menu"
-//         iconName="ios-menu"
-//         onPress={() => {
-//           navData.navigation.toggleDrawer();
-//         }}
-//       />
-//     </HeaderButtons>
-//   )
-// });
 
 
 const styles = StyleSheet.create({

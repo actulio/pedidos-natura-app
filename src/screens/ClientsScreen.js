@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const ContactsScreen = () => (
+const ClientsScreen = () => (
   <View style={styles.container}>
-    <Text>This is the contacts screen!</Text>
+    <Text>This is the clients screen!</Text>
   </View>
 );
 
@@ -15,4 +15,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ContactsScreen;
+export default ClientsScreen;

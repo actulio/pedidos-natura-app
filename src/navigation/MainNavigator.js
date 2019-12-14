@@ -11,7 +11,8 @@ import { Ionicons } from '@expo/vector-icons';
 import LoginScreen from '../screens/Login';
 import HomeScreen from '../screens/HomeScreen';
 import OrdersScreen from '../screens/OrdersScreen';
-import ContactsScreen from '../screens/ContactsScreen';
+import ClientsScreen from '../screens/ClientsScreen';
+import NewOrderByClientScreen from '../screens/NewOrderByClient';
 import Colors from '../constants/Colors';
 
 
@@ -31,9 +32,9 @@ const HomeNavigator = createStackNavigator(
   }
 );
 
-const ContactsNavigator = createStackNavigator(
+const ClientsNavigator = createStackNavigator(
   {
-    Contacts: ContactsScreen
+    Clients: ClientsScreen,
   },
   {
     defaultNavigationOptions: defaultNavOptions
@@ -42,7 +43,8 @@ const ContactsNavigator = createStackNavigator(
 
 const OrdersNavigator = createStackNavigator(
   {
-    Orders: OrdersScreen
+    Orders: OrdersScreen,
+    NewOrderByClient: NewOrderByClientScreen
   },
   {
     defaultNavigationOptions: defaultNavOptions
@@ -59,12 +61,12 @@ const LoginNavigator = createStackNavigator(
 
 const BottomTabsRouteConfig = {
   Home: {
-    screen: HomeNavigator,
+    screen: HomeNavigator, // change to home navigator
     navigationOptions: {
       tabBarIcon: (tabInfo) => (
         <Ionicons name="md-cash" size={23} color={tabInfo.tintColor} />
       ),
-      tabBarColor: Colors.primaryColor,
+      tabBarColor: Colors.moneyGreen,
       tabBarLabel: <Text style={{ fontSize: 14 }}>Finanças</Text>
     }
   },
@@ -74,19 +76,19 @@ const BottomTabsRouteConfig = {
       tabBarIcon: (tabInfo) => (
         <Ionicons name="md-cart" size={23} color={tabInfo.tintColor} />
       ),
-      tabBarColor: '#1A6D69',
+      tabBarColor: Colors.primaryColor,
       tabBarLabel: <Text style={{ fontSize: 15 }}>Pedidos</Text>
     }
 
   },
-  Contacts: {
-    screen: ContactsNavigator,
+  Clients: {
+    screen: ClientsNavigator,
     navigationOptions: {
       tabBarIcon: (tabInfo) => (
         <Ionicons name="md-contacts" size={23} color={tabInfo.tintColor} />
       ),
       tabBarColor: '#1E64FF',
-      tabBarLabel: <Text style={{ fontSize: 15 }}>Contatos</Text>
+      tabBarLabel: <Text style={{ fontSize: 15 }}>Clientes</Text>
     }
   },
 };
