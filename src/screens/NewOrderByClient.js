@@ -4,8 +4,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   ScrollView,
-  Button,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -25,34 +24,30 @@ const InnerNewOrder = (props) => {
   } = props;
 
   return (
-    <KeyboardAvoidingView style={styles.form} behavior="padding" keyboardVerticalOffset="150">
-      <MyTextInput
-        label="Nome do cliente *"
-        name="name"
-        onChangeText={handleChange('name')}
-        onBlur={handleBlur('name')}
-        value={values.name}
-        returnKeyType="next"
-        autoCapitalize="words"
-      />
+    <>
+      <KeyboardAvoidingView style={styles.form} behavior="padding" keyboardVerticalOffset="150">
+        <MyTextInput
+          label="Nome do cliente *"
+          name="name"
+          onChangeText={handleChange('name')}
+          onBlur={handleBlur('name')}
+          value={values.name}
+          returnKeyType="next"
+          autoCapitalize="words"
+        />
 
-      <ScrollView>
         <FieldArray
           name="products"
           render={(arrayHelpers) => (
-            <>
+            <ScrollView style={{ marginBottom: 5, flex: 1 }}>
               {values.products.map((product, index) => (
-                // eslint-disable-next-line react/no-array-index-key
+              // eslint-disable-next-line react/no-array-index-key
                 <View key={`i-${index}`} style={styles.productItem}>
 
                   <View style={styles.cancelButtonContainer}>
-                    <TouchableOpacity
-                      style={styles.cancelButton}
-                      onPress={() => arrayHelpers.remove(index)}
-                    >
-                      <Ionicons name="md-close-circle" size={20} color="#A9A9A9" />
+                    <TouchableOpacity style={styles.cancelButton} onPress={() => arrayHelpers.remove(index)}>
+                      <Ionicons name="md-close-circle" size={20} color={Colors.lightGray} />
                     </TouchableOpacity>
-
                   </View>
 
                   <MyTextInput
@@ -63,8 +58,8 @@ const InnerNewOrder = (props) => {
                     value={values.products[index].code}
                     autoCapitalize="none"
                     autoCorrect={false}
+                    returnKeyType="next"
                   />
-
 
                   <MyTextInput
                     name={`products[${index}].value`}
@@ -73,15 +68,7 @@ const InnerNewOrder = (props) => {
                     onBlur={handleBlur(`products[${index}].value`)}
                     value={values.products[index].value}
                     keyboardType="number-pad"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                  />
-                  <MyTextInput
-                    name={`products[${index}].description`}
-                    label="Descrição *"
-                    onChangeText={handleChange(`products[${index}].description`)}
-                    onBlur={handleBlur(`products[${index}].description`)}
-                    value={values.products[index].description}
+                    returnKeyType="next"
                   />
                   <MyTextInput
                     name={`products[${index}].quantity`}
@@ -91,51 +78,61 @@ const InnerNewOrder = (props) => {
                     value={values.products[index].quantity}
                     defaultValue={values.products[index].quantity.toString()}
                     keyboardType="number-pad"
+                    returnKeyType="next"
+                  />
+                  <MyTextInput
+                    name={`products[${index}].description`}
+                    label="Descrição"
+                    onChangeText={handleChange(`products[${index}].description`)}
+                    onBlur={handleBlur(`products[${index}].description`)}
+                    value={values.products[index].description}
                   />
 
                 </View>
               ))}
 
-              {/*
               <TouchableOpacity
-                style={{
-                  overflow: 'hidden',
-                  position: 'absolute',
-                  alignSelf: 'baseline',
-                  flex: 1
-                }}
-                onPress={() => (
-                  arrayHelpers.push({
-                    code: '', value: '', description: '', quantity: 1
-                  })
-                )}
+                style={styles.addButton}
+                onPress={() => (arrayHelpers.push({
+                  code: '', value: '', description: '', quantity: 1
+                }))}
               >
-                <Ionicons name="md-add-circle" size={20} color="#A9A9A9" />
-              </TouchableOpacity> */}
-              <Button
-                title="+"
-                onPress={() => (
-                  arrayHelpers.push({
-                    code: '', value: '', description: '', quantity: 1
-                  })
-                )}
-                color={Colors.primaryColor}
+                <Ionicons name="ios-add-circle-outline" size={35} color={Colors.lightGray} />
+              </TouchableOpacity>
 
-              />
-              <Button
-                title="submit"
-                onPress={handleSubmit}
-              />
-            </>
+            </ScrollView>
           )}
         />
-      </ScrollView>
 
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+
+      <View style={styles.submitContainer}>
+        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <Ionicons name="md-checkmark" size={35} color="white" />
+        </TouchableOpacity>
+      </View>
+    </>
+
   );
 };
 
 const styles = StyleSheet.create({
+  submitButton: {
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    elevation: 7,
+    bottom: 10,
+    right: 10,
+    backgroundColor: Colors.primaryColor,
+    borderRadius: 25,
+  },
+  addButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -146,13 +143,13 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     paddingHorizontal: 20,
     marginVertical: 5,
-
   },
   productItem: {
     padding: 20,
     marginBottom: 10,
     marginHorizontal: 1,
-    elevation: 1,
+    borderColor: '#ddd',
+    borderWidth: 2,
     borderRadius: 5,
     overflow: 'hidden',
   },
@@ -183,7 +180,7 @@ const newOrderByClient = withFormik({
       Yup.object().shape({
         code: Yup.string().required('O código é obrigatório'),
         value: Yup.string().required('O valor é obrigatório'),
-        description: Yup.string().required('A descrição é obrigatória'),
+        description: Yup.string(),
         quantity: Yup.number().required('A quantidade é obrigatória'),
       })
     ),
@@ -192,7 +189,7 @@ const newOrderByClient = withFormik({
   handleSubmit: (values, { props, setSubmitting }) => {
     console.log(values);
     setSubmitting(false);
-    props.navigation.navigate('Home');
+    // props.navigation.navigate('Home');
   }
 })(InnerNewOrder);
 

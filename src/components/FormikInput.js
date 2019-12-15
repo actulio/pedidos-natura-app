@@ -44,7 +44,7 @@ const FormikInput = ({
 };
 
 const styles = StyleSheet.create({
-  hasErrorText: {
+  hasError: {
     color: 'red',
   },
   hasErrorContainer: {
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
     color: '#444',
-    marginBottom: 8,
+    marginBottom: 3,
   },
   input: {
     borderWidth: 1,
