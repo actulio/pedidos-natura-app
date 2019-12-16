@@ -17,13 +17,10 @@ const ErrorText = (props) => {
   );
 };
 
-
-const FormikInput = ({
-  label,
-  ...props
-}) => {
+const FormikInput = React.forwardRef((props, ref) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
   // which we can spread on <input> and also replace ErrorMessage entirely.
+  const { label } = props;
   const [field, meta] = useField(props);
   const { value, name } = field;
 
@@ -32,16 +29,16 @@ const FormikInput = ({
       <Text style={styles.label}>{label}</Text>
       <TextInput
         {...props}
-        name={name}
         value={value[name]}
         style={styles.input}
+        ref={ref}
       />
       {meta.touched && meta.error ? (
         <ErrorText error={meta.error} />
       ) : null}
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   hasError: {

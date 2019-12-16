@@ -25,6 +25,7 @@ const InnerLoginForm = (props) => {
 
   values.email = 'aaa@gmail.com';
   values.password = 'password';
+  const [ref, setRef] = React.useState(React.createRef());
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset="200">
@@ -41,6 +42,8 @@ const InnerLoginForm = (props) => {
           returnKeyType="next"
           autoCapitalize="none"
           autoCorrect={false}
+          onSubmitEditing={() => { ref.focus(); }}
+          blurOnSubmit={false}
         />
         <MyTextInput
           label="SUA SENHA *"
@@ -52,6 +55,8 @@ const InnerLoginForm = (props) => {
           autoCapitalize="none"
           autoCorrect={false}
           returnKeyType="done"
+          forwardRef
+          ref={(input) => setRef(input)}
         />
 
         <TouchableOpacity onPress={handleSubmit} style={styles.button}>
